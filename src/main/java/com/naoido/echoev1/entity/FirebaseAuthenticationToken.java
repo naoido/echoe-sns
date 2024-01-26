@@ -33,4 +33,8 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
     public String getName() {
         return this.token.getName();
     }
+
+    public String getImageUrl() {
+        return this.token.getPicture();
+    }
 }

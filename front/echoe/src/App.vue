@@ -23,7 +23,9 @@
         <template v-slot:activator="{ props }">
           <v-avatar v-bind="props" class="cursor-pointer"
                     color="grey-darken-1"
-                    size="32"/>
+                    size="32">
+            <v-img :src="userImage" v-if="!!userImage"/>
+          </v-avatar>
         </template>
 
         <v-list>
@@ -66,6 +68,8 @@ import { auth } from "@/plugins/firebaseConfig"
 import { signOut } from "firebase/auth";
 import LoginForm from "@/components/Login.vue";
 import HelloWorld from "@/components/HelloWorld.vue";
+import Profile from "@/components/Profile.vue";
+import axios from "@/plugins/axios";
 
 const items = []
 
@@ -79,14 +83,22 @@ export default {
         component: HelloWorld
 
       }
-    ]
+    ],
+    userImage: localStorage.getItem('userImage')
   }),
-  mounted() {
+  async mounted() {
     if(localStorage.getItem("token")) {
       items.push({title: "Profile", action: "profile"})
-      items.push({title: "SignOut", action: "signOut"})
+      items.push({title: "logout", action: "logout"})
+      this.tabs.push({title: "PROFILE", component: Profile})
 
-      this.tabs.push({title: "PROFILE", component: LoginForm})
+      if (!localStorage.getItem("userImage") || !localStorage.getItem("userId") || !localStorage.getItem("userName")) {
+        const data = (await axios.get("/api/api/v1/profile/")).data
+        localStorage.setItem("userName", data.userName)
+        localStorage.setItem("userId", data.userId)
+        localStorage.setItem("userImage", data.image)
+      }
+
     } else {
       items.push({title: "Login", action:"login"})
 
@@ -101,12 +113,15 @@ export default {
           break;
         }
         case "profile": {
-          console.log("profile")
+          this.selectedTab = "PROFILE"
           break;
         }
-        case "signOut": {
+        case "logout": {
           signOut(auth).then(() => {
             localStorage.removeItem("token")
+            localStorage.removeItem("userId")
+            localStorage.removeItem("userName")
+            localStorage.removeItem("userImage")
             window.location.reload()
           }).catch((error) => {
             console.log(error)

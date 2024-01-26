@@ -3,7 +3,6 @@
     <v-card-title>Login!</v-card-title>
     <div class="d-flex flex-column">
       <v-btn @click="googleLogin" class="mt-4 mx-4" color="red">Google ログイン</v-btn>
-      <v-btn @click="get" class="mt-4 mx-4" color="blue">send</v-btn>
     </div>
   </v-card>
 </template>
@@ -11,7 +10,6 @@
 <script>
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { auth } from "@/plugins/firebaseConfig"
-import axios from "@/plugins/axios";
 
 export default {
   name: 'login-form',
@@ -22,16 +20,13 @@ export default {
       signInWithPopup(auth, provider).then(async result => {
         const token = await result.user.getIdToken(true)
 
+        localStorage.setItem("userName", result.user.displayName)
+        localStorage.setItem("userId", result.user.uid)
+        localStorage.setItem("userImage", result.user.photoURL)
+
         localStorage.setItem("token", token)
         window.location.reload()
-      }).catch(error => {
-        console.log(error)
-        this.errorMessage = error.message
-        this.showError = true
       })
-    },
-    async get() {
-      await axios.get("https://naoido.com/api/api/v1/echo/")
     }
   }
 }

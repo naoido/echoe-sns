@@ -8,7 +8,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.coyote.BadRequestException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,23 +18,30 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
+        System.out.println(request.getRequestURI() + " " + token);
 
+        if (token == null) {
+            response.getWriter().print("token is empty.");
+            response.setStatus(403);
+            return;
+        }
         try {
             FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(token);
             SecurityContextHolder.getContext().setAuthentication(new FirebaseAuthenticationToken(firebaseToken, null));
 
             filterChain.doFilter(request, response);
         } catch (FirebaseAuthException e) {
-            throw new BadCredentialsException("トークンが無効です。");
+            response.getWriter().print("token is invalid.");
+            response.setStatus(403);
         }
     }
 
 
-    private String getToken(HttpServletRequest request) throws BadRequestException {
+    private String getToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 
         if (token == null || !token.startsWith("Bearer")) {
-            throw new BadRequestException("Tokenが必要です。");
+            return null;
         }
 
         return token.substring("Bearer ".length());

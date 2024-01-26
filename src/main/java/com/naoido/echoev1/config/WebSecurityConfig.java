@@ -1,10 +1,13 @@
 package com.naoido.echoev1.config;
 
+import com.google.firebase.auth.FirebaseToken;
+import com.naoido.echoev1.entity.FirebaseAuthenticationToken;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -16,8 +19,13 @@ public class WebSecurityConfig {
         http
                 .addFilterBefore(new FirebaseAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/**").authenticated())
-                .csrf(AbstractHttpConfigurer::disable);
+                        .requestMatchers("/api/**").authenticated());
+
         return http.build();
+    }
+
+    @Bean
+    public FirebaseAuthenticationToken firebaseToken() {
+        return (FirebaseAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
     }
 }

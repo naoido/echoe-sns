@@ -1,5 +1,12 @@
 version: "3.8"
 services:
+  front:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./front/nginx:/etc/nginx/conf.d
+      - ./front/echoe/dist:/usr/share/nginx/html
   mysql:
     image: mysql:latest
     volumes:

@@ -29,4 +29,8 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
     public String getUserId() {
         return this.token.getUid();
     }
+
+    public String getName() {
+        return this.token.getName();
+    }
 }

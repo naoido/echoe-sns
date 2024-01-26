@@ -37,3 +37,4 @@ out/
 .vscode/
 /firebaseKey.json
 /mysql/data/
+/front/echoe/vue.env

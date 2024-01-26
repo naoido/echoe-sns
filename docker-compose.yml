@@ -1,7 +1,5 @@
 version: "3.8"
 services:
-  spring:
-
   mysql:
     image: mysql:latest
     volumes:
@@ -11,7 +9,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - internal_network
+      - external_network
     env_file:
       - ./mysql/conf.env
     healthcheck:

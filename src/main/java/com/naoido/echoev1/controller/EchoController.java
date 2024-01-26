@@ -1,5 +1,8 @@
 package com.naoido.echoev1.controller;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.naoido.echoev1.entity.Echo;
 import com.naoido.echoev1.entity.FirebaseAuthenticationToken;
 import com.naoido.echoev1.service.EchoesService;
@@ -24,6 +27,12 @@ public class EchoController {
     @GetMapping("/profile/")
     public Map<String, String> profile(FirebaseAuthenticationToken token) {
         return Map.of("user-id", token.getUserId(), "user-name", token.getName(), "image", token.getImageUrl());
+    }
+
+    @GetMapping("/profile/{userId}")
+    public Map<String, String> otherProfile(@PathVariable String userId) throws FirebaseAuthException {
+        UserRecord user = FirebaseAuth.getInstance().getUser(userId);
+        return Map.of("user-id", user.getUid(), "user-name", user.getDisplayName(), "image", user.getPhotoUrl());
     }
 
     @PostMapping("/echo")

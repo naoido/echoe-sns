@@ -66,9 +66,9 @@
 <script>
 import { auth } from "@/plugins/firebaseConfig"
 import { signOut } from "firebase/auth";
-import LoginForm from "@/components/Login.vue";
-import HelloWorld from "@/components/HelloWorld.vue";
+import LoginForm from "@/components/Login.vue"
 import Profile from "@/components/Profile.vue";
+import Home from "@/components/Home.vue";
 import axios from "@/plugins/axios";
 
 const items = []
@@ -80,7 +80,7 @@ export default {
     tabs: [
       {
         title: "HOME",
-        component: HelloWorld
+        component: Home
 
       }
     ],

@@ -32,12 +32,11 @@ public class EchoController {
     @GetMapping("/profile/{userId}")
     public Map<String, String> otherProfile(@PathVariable String userId) throws FirebaseAuthException {
         UserRecord user = FirebaseAuth.getInstance().getUser(userId);
-        return Map.of("user-id", user.getUid(), "user-name", user.getDisplayName(), "image", user.getPhotoUrl());
+        return Map.of("userId", user.getUid(), "userName", user.getDisplayName(), "image", user.getPhotoUrl());
     }
 
     @PostMapping("/echo")
     public String echo(@RequestParam("echo") String echo, FirebaseAuthenticationToken token) {
-        System.out.println("hi");
         this.echoesService.saveEcho(token.getUserId(), echo);
         return "success";
     }

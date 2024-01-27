@@ -56,7 +56,7 @@
     </v-main>
     <v-footer class="flex-0-0">
       <v-col class="text-center" cols="12" color="grey-darken-2">
-        ©{{ new Date().getFullYear() }} naoido
+        ©{{ new Date().getFullYear() }} - naoido
       </v-col>
     </v-footer>
   </v-app>

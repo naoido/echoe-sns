@@ -1,6 +1,6 @@
 <template>
   <v-card :width="300" class="mx-auto mt-10 pb-10">
-    <v-card-title>Login!</v-card-title>
+    <v-card-title>Login</v-card-title>
     <div class="d-flex flex-column">
       <v-btn @click="googleLogin" class="mt-4 mx-4" color="red">Google ログイン</v-btn>
     </div>

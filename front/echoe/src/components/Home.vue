@@ -36,7 +36,7 @@
               rounded="xl"
               color="white"
               class="bg-blue"
-              @click="isActive = false; sendEcho()"
+              @click="isActive.value = false; sendEcho();"
           />
         </v-card-actions>
       </v-card>
@@ -59,12 +59,12 @@ export default {
   }),
   async mounted() {
     if (localStorage.getItem("token")) {
-      const ec = (await axios.get(`/api/api/v1/echo?index=${this.index}`)).data;
+      const ec = (await axios.get(`/api/v1/echo?index=${this.index}`)).data;
       ec.reverse()
 
       for (const obj of ec) {
         if (!userDetails.has(obj.userId)) {
-          const profile = (await axios.get("/api/api/v1/profile/" + obj.userId)).data
+          const profile = (await axios.get("/api/v1/profile/" + obj.userId)).data
           userDetails.set(obj.userId, profile)
         }
         const detail = userDetails.get(obj.userId)
@@ -73,9 +73,6 @@ export default {
 
         this.echoes.unshift(obj)
       }
-
-      console.log(this.echoes[0])
-      console.log(this.echoes[0].userName)
 
       this.index++
     } else {
@@ -89,7 +86,7 @@ export default {
   },
   methods: {
     async sendEcho() {
-      await axios.post("/api/api/v1/echo?echo="+this.echo).then(() => {
+      await axios.post("/api/v1/echo?echo="+this.echo).then(() => {
         this.echoes.unshift({
           userId: localStorage.getItem("token"),
           userName: localStorage.getItem("userName"),

@@ -93,12 +93,11 @@ export default {
       this.tabs.push({title: "PROFILE", component: Profile})
 
       if (!localStorage.getItem("userImage") || !localStorage.getItem("userId") || !localStorage.getItem("userName")) {
-        const data = (await axios.get("/api/api/v1/profile/")).data
+        const data = (await axios.get("/api/v1/profile/")).data
         localStorage.setItem("userName", data.userName)
         localStorage.setItem("userId", data.userId)
         localStorage.setItem("userImage", data.image)
       }
-
     } else {
       items.push({title: "Login", action:"login"})
 

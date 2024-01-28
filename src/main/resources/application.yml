@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/echoe?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://mysql:3306/echoe?allowPublicKeyRetrieval=true&useSSL=false&enabledTLSProtocols=TLSv1.2
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: password

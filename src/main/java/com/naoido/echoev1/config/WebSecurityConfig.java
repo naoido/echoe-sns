@@ -18,7 +18,6 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .addFilterBefore(new FirebaseAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(authz -> authz.requestMatchers("/api/**").authenticated());
-
         return http.build();
     }
 

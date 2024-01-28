@@ -1,5 +1,20 @@
 version: "3.8"
 services:
+  spring:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - internal_network
+      - external_network
+    environment:
+      - PROJECT_VERSION=0.0.1
+    depends_on:
+      mysql:
+        condition: service_healthy
+
   front:
     image: nginx:latest
     ports:
@@ -7,6 +22,12 @@ services:
     volumes:
       - ./front/nginx:/etc/nginx/conf.d
       - ./front/echoe/dist:/usr/share/nginx/html
+    networks:
+      - external_network
+    depends_on:
+      spring:
+        condition: service_started
+
   mysql:
     image: mysql:latest
     volumes:
@@ -16,7 +37,7 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - external_network
+      - internal_network
     env_file:
       - ./mysql/conf.env
     healthcheck:
@@ -28,6 +49,5 @@ services:
 
 networks:
   internal_network:
-    driver: bridge
     internal: true
   external_network:

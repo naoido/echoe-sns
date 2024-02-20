@@ -5,7 +5,7 @@
 
 <br>
 
-2.ルートディレクトリにfirebaseKey.jsonを作成し、Firebaseからkeyを取得する  
+2.Firebaseからkeyを取得し、ルートディレクトリにfirebaseKey.jsonを作成しそこに保存する
 
 <br>
 
